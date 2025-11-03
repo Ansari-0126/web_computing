@@ -1,0 +1,211 @@
+create folder
+
+ui-calculator
+----------------------------------------
+npm init -y
+----------------------------------
+npm install express
+-------------------------------
+ui-calculator/
+│
+├── server.js
+└── public/
+     ├── index.html
+     ├── style.css
+     └── script.js
+--------------------------------------
+server.js
+
+const express = require("express");
+const path = require("path");
+const app = express();
+
+// Serve static files (HTML, CSS, JS)
+app.use(express.static(path.join(__dirname, "public")));
+
+// Start the server
+app.listen(3000, () => {
+  console.log("Calculator running at http://localhost:3000");
+});
+---------------------------------------------------------------------
+public/index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" id="display" readonly />
+    <div class="buttons">
+      <button>7</button>
+      <button>8</button>
+      <button>9</button>
+      <button>/</button>
+      <button>4</button>
+      <button>5</button>
+      <button>6</button>
+      <button>*</button>
+      <button>1</button>
+      <button>2</button>
+      <button>3</button>
+      <button>-</button>
+      <button>0</button>
+      <button>.</button>
+      <button>=</button>
+      <button>+</button>
+      <button id="clear">C</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+-----------------------------------------------------------
+public/style.css
+
+/* Reset basic styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #74ABE2, #5563DE);
+}
+
+/* Calculator container */
+.calculator {
+  background: #1e1e2e;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  width: 320px;
+}
+
+/* Display screen */
+#display {
+  width: 100%;
+  height: 70px;
+  background: #12121c;
+  border: none;
+  border-radius: 12px;
+  color: #00FF99;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: right;
+  padding: 15px;
+  margin-bottom: 20px;
+  box-shadow: inset 0 0 10px #000;
+  outline: none;
+}
+
+/* Button grid layout */
+.buttons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+/* Calculator buttons */
+button {
+  height: 65px;
+  font-size: 20px;
+  font-weight: 500;
+  border: none;
+  border-radius: 12px;
+  background: #2f2f3a;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Hover and active effects */
+button:hover {
+  background: #3d3d4f;
+  transform: scale(1.05);
+}
+
+button:active {
+  background: #55556b;
+  transform: scale(0.98);
+}
+
+/* Operator buttons (+, -, *, /) */
+button:nth-child(4n) {
+  background: #5A5AF7;
+  color: white;
+  font-weight: bold;
+}
+
+button:nth-child(4n):hover {
+  background: #7b7bff;
+}
+
+/* Equal button */
+button:nth-last-child(2) {
+  background: #00C896;
+  color: #fff;
+  font-weight: bold;
+}
+
+button:nth-last-child(2):hover {
+  background: #00e0ac;
+}
+
+/* Clear button */
+#clear {
+  grid-column: span 4;
+  background: #FF4D4D;
+  color: white;
+  font-weight: bold;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+#clear:hover {
+  background: #ff6b6b;
+}
+
+............................................................
+public/script.js
+
+const display = document.getElementById("display");
+const buttons = document.querySelectorAll("button");
+
+let currentInput = "";
+
+buttons.forEach((button) => {
+  button.addEventListener("click", () => {
+    const value = button.textContent;
+
+    if (value === "C") {
+      currentInput = "";
+      display.value = "";
+    } else if (value === "=") {
+      try {
+        currentInput = eval(currentInput); // Evaluate the math expression
+        display.value = currentInput;
+      } catch {
+        display.value = "Error";
+      }
+    } else {
+      currentInput += value;
+      display.value = currentInput;
+    }
+  });
+});
+------------------------------------------------------
+
+node server.js
