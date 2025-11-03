@@ -1,0 +1,111 @@
+Step 1: First, open the Cisco packet tracer desktop and select the devices given below:
+S.NO    Device      Model Name      Qty.
+1.      PC                PC          6
+2.    Switch        PT-Switch         3
+3.   Router        PT-router          3
+
+
+
+IP Addressing Table:
+S.NO        Device      IPv4 Address         Subnet mask         Default Gateway
+1.          PC0        192.168.10.2       255.255.255.0        192.168.10.1
+2.         PC1       192.168.10.3        255.255.255.0         192.168.10.1
+3.        PC2         192.168.20.2       255.255.255.0        192.168.20.1
+4.       PC3         192.168.20.3        255.255.255.0        192.168.20.1
+5.     PC4           192.168.30.2         255.255.255.0      192.168.30.1
+6.    PC5           192.168.30.3          255.255.255.0       192.168.30.1
+
+Then, create a network topology as shown below the image.
+Use an Automatic connecting cable to connect the devices with others.
+
+Step 2: Configure the PCs (hosts) with IPv4 address and Subnet Mask according to the IP addressing table given above.
+To assign an IP address in PC0, click on PC0.
+Then, go to desktop and then IP configuration and there you will IPv4 configuration.
+Fill IPv4 address and subnet mask.
+
+
+Repeat the same procedure with other PCs to configure them thoroughly.
+
+Step 3: Configure router with IP address and Subnet mask.
+IP Addressing Table Router:
+S.NO         Device         Interface          IPv4 Address        Subnet mask
+
+1.           router0          FastEthernet0/0      192.168.10.1     255.255.255.0
+                                Serial2/0          10.0.0.1           255.0.0.0
+
+
+
+2.
+router1
+FastEthernet0/0
+192.168.20.1
+255.255.255.0
+
+Serial2/0
+10.0.0.2
+255.0.0.0
+
+Serial3/0
+11.0.0.1
+255.0.0.0
+
+3.
+router2
+FastEthernet0/0
+192.168.30.1
+255.255.255.0
+
+Serial2/0
+11.0.0.2
+255.0.0.0
+
+To assign an IP address in router0, click on router0.
+Then, go to config and then Interfaces.
+Make sure to turn on the ports.
+Then, configure the IP address in FastEthernet and serial ports according to IP addressing Table.
+Fill IPv4 address and subnet mask.
+
+
+Repeat the same procedure with other routers to configure them thoroughly.
+Step 4: After configuring all of the devices we need to assign the routes to the routers. To assign RIP routes to the particular router:
+First, click on router0 then Go to CLI.
+Then type the commands and IP information given below.
+CLI command : network <network id> RIP Routes for Router0 are given  below:
+Router(config)#network 192.168.10.0
+Router(config)#network 10.0.0.0
+RIP Routes for Router1 are given below:
+Router(config)#network 192.168.20.0
+Router(config)#network 10.0.0.0
+Router(config)#network 11.0.0.0
+RIP Routes for Router2 are given below:
+Router(config)#network 192.168.30.0
+Router(config)#network 11.0.0.0
+Step 5: Verifying the network by pinging the IP address of any PC.
+We will use the ping command to do so.
+First, click on PC0 then Go to the command prompt.
+Then type ping <IP address of targeted node>.
+As we can see in the below image we are getting replies which means the connection is working properly.
+Example: ping 192.168.20.2
+
+A simulation of the experiment is given below we are sending PDU from PC0 to PC2 and PC3 to PC5:
+
+
+
+
+OUTPUT:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+CONCLUSION:
+We have Design and simulate the environment for Dynamic routing using Cisco packet tracer.
