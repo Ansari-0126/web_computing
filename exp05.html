@@ -1,0 +1,240 @@
+npx create-react-app my-react-app --use-npm --no-git
+
+cd my-react-app
+
+src/
+ ├── components/
+ │    ├── RegistrationForm.js
+ │    ├── RegistrationForm.css
+ │    ├── BookStore.js
+ │    └── BookStore.css
+ ├── App.js
+ ├── index.js
+ └── index.css
+
+src/index.js
+
+import React from "react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import "./index.css";
+
+const root = createRoot(document.getElementById("root"));
+root.render(<App />);
+----------------------------------------------------------------------------------------------
+src/index.css
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f8f9fa;
+}
+----------------------------------------------------------------------------------------------------
+src/App.js
+
+import React, { useState } from "react";
+import RegistrationForm from "./components/RegistrationForm";
+import BookStore from "./components/BookStore";
+
+function App() {
+  const [page, setPage] = useState("register");
+
+  return (
+    <div>
+      <header style={{ background: "#fff", padding: "10px", textAlign: "center" }}>
+        <h2>My React App</h2>
+        <button onClick={() => setPage("register")} style={{ margin: "5px" }}>Registration</button>
+        <button onClick={() => setPage("store")} style={{ margin: "5px" }}>Book Store</button>
+      </header>
+
+      <main style={{ padding: "20px" }}>
+        {page === "register" ? <RegistrationForm /> : <BookStore />}
+      </main>
+    </div>
+  );
+}
+
+export default App;
+---------------------------------------------------------------------------------------------
+src/components/RegistrationForm.js
+
+import React, { useState } from "react";
+import "./RegistrationForm.css";
+
+export default function RegistrationForm() {
+  const [form, setForm] = useState({ name: "", email: "", password: "", confirm: "" });
+  const [message, setMessage] = useState("");
+
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (form.password !== form.confirm) {
+      setMessage("Passwords do not match!");
+    } else {
+      setMessage("Registration Successful!");
+      console.log("User Data:", form);
+      setForm({ name: "", email: "", password: "", confirm: "" });
+    }
+  }
+
+  return (
+    <div className="register-container">
+      <h3>Registration Form</h3>
+      <form onSubmit={handleSubmit}>
+        <label>Name:</label>
+        <input name="name" value={form.name} onChange={handleChange} required />
+
+        <label>Email:</label>
+        <input name="email" type="email" value={form.email} onChange={handleChange} required />
+
+        <label>Password:</label>
+        <input name="password" type="password" value={form.password} onChange={handleChange} required />
+
+        <label>Confirm Password:</label>
+        <input name="confirm" type="password" value={form.confirm} onChange={handleChange} required />
+
+        <button type="submit">Register</button>
+      </form>
+      {message && <p className="msg">{message}</p>}
+    </div>
+  );
+}
+----------------------------------------------------------------------------------
+src/components/RegistrationForm.css
+
+.register-container {
+  width: 300px;
+  margin: 30px auto;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px #ccc;
+}
+
+h3 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-top: 10px;
+}
+
+input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  margin-top: 15px;
+  padding: 8px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.msg {
+  margin-top: 10px;
+  text-align: center;
+  color: green;
+}
+---------------------------------------------------
+src/components/BookStore.js
+import React, { useState } from "react";
+import "./BookStore.css";
+
+export default function BookStore() {
+  const books = [
+    { id: 1, title: "The Alchemist", author: "Paulo Coelho", price: 250 },
+    { id: 2, title: "Atomic Habits", author: "James Clear", price: 350 },
+    { id: 3, title: "Rich Dad Poor Dad", author: "Robert Kiyosaki", price: 400 },
+  ];
+
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (book) => {
+    setCart([...cart, book]);
+  };
+
+  return (
+    <div className="bookstore">
+      <h3>Online Book Store</h3>
+      <div className="book-list">
+        {books.map((b) => (
+          <div key={b.id} className="book-card">
+            <h4>{b.title}</h4>
+            <p>Author: {b.author}</p>
+            <p>Price: ₹{b.price}</p>
+            <button onClick={() => addToCart(b)}>Add to Cart</button>
+          </div>
+        ))}
+      </div>
+
+      <div className="cart">
+        <h4>Cart ({cart.length})</h4>
+        {cart.map((c, i) => (
+          <p key={i}>{c.title} - ₹{c.price}</p>
+        ))}
+      </div>
+    </div>
+  );
+}
+-----------------------------------------------------------------------------
+src/components/BookStore.css
+
+.bookstore {
+  text-align: center;
+}
+
+.book-list {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.book-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 6px;
+  width: 180px;
+  box-shadow: 0 2px 8px #ccc;
+}
+
+.book-card button {
+  margin-top: 10px;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: white;
+  cursor: pointer;
+}
+
+.cart {
+  margin-top: 25px;
+  background: #f7f7f7;
+  padding: 10px;
+  border-radius: 8px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+------------------------------------------------------------
+npm start
+
+
